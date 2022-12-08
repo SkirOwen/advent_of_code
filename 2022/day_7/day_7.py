@@ -1,10 +1,6 @@
 from typing import List, Dict
 
 
-def sum_in_folder():
-	pass
-
-
 def is_command(split_line: List) -> bool:
 	return split_line[0] == "$"
 
@@ -94,13 +90,30 @@ def main() -> None:
 	starting_dir = "/"
 	get_dir_size(size_tree=size_tree, tree=tree, current_dir=starting_dir)
 	
+	# Part One
 	sum_dir_above_100_000 = 0
-
 	for key, val in size_tree.items():
 		if val <= 100_000:
 			sum_dir_above_100_000 += val
 
 	print(sum_dir_above_100_000)
+
+	# Part Two
+	total_disk = 70_000_000
+	current_used_space = size_tree["/"]
+	update_size = 30_000_000
+
+	unused_space = total_disk - current_used_space
+	space_to_free = update_size - unused_space
+
+	size_folder_candidate_for_deletion = []
+
+	for key, val in size_tree.items():
+		if val >= space_to_free:
+			size_folder_candidate_for_deletion.append(val)
+
+	print(min(size_folder_candidate_for_deletion))
+
 
 if __name__ == "__main__":
 	main()
