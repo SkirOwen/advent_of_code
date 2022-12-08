@@ -27,6 +27,7 @@ def group_by_cmd(lines: List) -> List:
 def tree_files_in_folder(command_grp: List, verbose: bool = False) -> Dict:
 	tree = {}
 	r = 0
+	full_path = []
 
 	for v in command_grp:
 		cmd = v[0]
@@ -36,14 +37,20 @@ def tree_files_in_folder(command_grp: List, verbose: bool = False) -> Dict:
 			directory = cmd[2]
 			
 			if directory ==  "..":
+				full_path.pop()
 				r -= 1
 			elif directory != "/":
 				if verbose:
 					print(f"{tab * r}{directory}")
-				tree[directory] = []
+
+				full_path.append(directory)
+				tree[" ".join(map(str, full_path))] = []
 				r += 1
+				
 			else:
-				tree[directory] = []
+				full_path.append(directory)
+				tree[" ".join(map(str, full_path))] = []
+
 				if verbose:
 					print("/")
 
@@ -52,22 +59,21 @@ def tree_files_in_folder(command_grp: List, verbose: bool = False) -> Dict:
 				for f in v[1:]:
 					print(f"{tab * r}{f}")
 
-			tree[directory].extend(v[1:])
+			tree[" ".join(map(str, full_path))].extend(v[1:])
 				# print(f"==={tree[directory]}")
 
 	return tree
 
-def get_dir_size(size_tree: Dict, tree: Dict, directory: str) -> Dict:
-	
 
-	for v in tree[directory]:
+def get_dir_size(size_tree: Dict, tree: Dict, current_dir: str) -> int:
+	for v in tree[current_dir]:
 		if v[0] == "dir":
-			size = get_dir_size(size_tree, tree, v[1])
-		else:
-			size = int(v[0])	
-		size_tree[directory] += size
+			nested_dir = f"{current_dir} {v[1]}"
+			size_tree[current_dir] += get_dir_size(size_tree, tree, nested_dir)
 
-	return size_tree[directory]
+		else:
+			size_tree[current_dir] += int(v[0])
+	return size_tree[current_dir]
 
 
 def main() -> None:
@@ -78,21 +84,23 @@ def main() -> None:
 
 	cmd_grp = group_by_cmd(lines)
 
-	tree = tree_files_in_folder(command_grp=cmd_grp, verbose=True)
+	# for v in cmd_grp:
+	# 	print(v)
+
+	tree = tree_files_in_folder(command_grp=cmd_grp, verbose=False)
 
 	size_tree = dict.fromkeys(tree.keys(), 0)
-	get_dir_size(size_tree, tree, "/")
 
-	# for key, val in tree.items():
-	# 	for v in val:
-	# 		if v[0] != "dir":
-	# 			size_tree[key] += int(v[0])
-	# 	print("")
-	for v in tree["/"]:
-		print(v[0])
+	starting_dir = "/"
+	get_dir_size(size_tree=size_tree, tree=tree, current_dir=starting_dir)
+	
+	sum_dir_above_100_000 = 0
 
-	print(size_tree)
+	for key, val in size_tree.items():
+		if val <= 100_000:
+			sum_dir_above_100_000 += val
 
+	print(sum_dir_above_100_000)
 
 if __name__ == "__main__":
 	main()
