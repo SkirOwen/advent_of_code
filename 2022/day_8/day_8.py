@@ -78,5 +78,5 @@ def main() -> None:
 	print(max(map(max, score_grid)))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 	main()
