@@ -114,14 +114,23 @@ def draw(canvas: List, current_point: List, close_list: List, open_list: List, n
 	orange = "\033[0;33m"
 	pure_red = "\033[0;31m"
 	dark_cyan = "\033[0;36m"
+	light_cyan = "\033[0;96m"
 	dark_blue = "\033[0;34m"
+	cyan_back = "\033[0;46m"
 	reset_colour = "\033[0m"
 
+	current_path = []
+	current = current_point
+	while current is not None:
+		current_path.append(current["pos"])
+		current = current["parent"]
 	
 	for point in close_list:
 		x, y = point["pos"][0], point["pos"][1]
 		if x == current_point["pos"][0] and y == current_point["pos"][1]:
 			colour = orange
+		elif point["pos"] in current_path:
+			colour = light_cyan
 		else:
 			colour = light_green
 		canvas[y][x] = colour + canvas[y][x] + reset_colour
@@ -130,9 +139,12 @@ def draw(canvas: List, current_point: List, close_list: List, open_list: List, n
 		x, y = point["pos"][0], point["pos"][1]
 		if point["pos"] in neighbours:
 			colour = dark_blue
+		elif point["pos"] in current_path:
+			colour = light_cyan
 		else:
 			colour = pure_red
 		canvas[y][x] = colour + canvas[y][x] + reset_colour
+
 
 	canvas[start[1]][start[0]] = dark_cyan + "S" + reset_colour
 	canvas[start[1]][start[0]] = dark_cyan + "E" + reset_colour
@@ -140,16 +152,19 @@ def draw(canvas: List, current_point: List, close_list: List, open_list: List, n
 	for pix in canvas:
 		print(*pix)
 	
+	time.sleep(0.01)
 	for i in range(len(canvas)):
 		print("\033[1A", end="\x1b[2K")
 
-	time.sleep(0.001)
 	if len(path) > 0:
 		for point in path:
 			x, y = point[0], point[1]
-			canvas[y][x] = dark_cyan + "*" + reset_colour
-		for pix in canvas:
-			print(*pix)
+			canvas[y][x] = dark_cyan + cyan_back + "*" + reset_colour
+			for pix in canvas:
+				print(*pix)
+			time.sleep(0.001)
+			for i in range(len(canvas)):
+				print("\033[1A", end="\x1b[2K")
 
 
 def get_a_coord(grid: List) -> List:
