@@ -7,7 +7,7 @@ def is_command(split_line: List) -> bool:
 
 def group_by_cmd(lines: List) -> List:
 	grp = []
-	cmd_idx = -1	# -1 to start at 0 with the first command added
+	cmd_idx = -1    # -1 to start at 0 with the first command added
 
 	for line in lines:
 		line = line.split()
@@ -31,8 +31,8 @@ def tree_files_in_folder(command_grp: List, verbose: bool = False) -> Dict:
 
 		if cmd[1] == "cd":
 			directory = cmd[2]
-			
-			if directory ==  "..":
+
+			if directory == "..":
 				full_path.pop()
 				r -= 1
 			elif directory != "/":
@@ -42,7 +42,7 @@ def tree_files_in_folder(command_grp: List, verbose: bool = False) -> Dict:
 				full_path.append(directory)
 				tree[" ".join(map(str, full_path))] = []
 				r += 1
-				
+
 			else:
 				full_path.append(directory)
 				tree[" ".join(map(str, full_path))] = []
@@ -56,7 +56,7 @@ def tree_files_in_folder(command_grp: List, verbose: bool = False) -> Dict:
 					print(f"{tab * r}{f}")
 
 			tree[" ".join(map(str, full_path))].extend(v[1:])
-				# print(f"==={tree[directory]}")
+			# print(f"==={tree[directory]}")
 
 	return tree
 
@@ -66,7 +66,6 @@ def get_dir_size(size_tree: Dict, tree: Dict, current_dir: str) -> int:
 		if v[0] == "dir":
 			nested_dir = f"{current_dir} {v[1]}"
 			size_tree[current_dir] += get_dir_size(size_tree, tree, nested_dir)
-
 		else:
 			size_tree[current_dir] += int(v[0])
 	return size_tree[current_dir]
@@ -89,7 +88,7 @@ def main() -> None:
 
 	starting_dir = "/"
 	get_dir_size(size_tree=size_tree, tree=tree, current_dir=starting_dir)
-	
+
 	# Part One
 	sum_dir_above_100_000 = 0
 	for key, val in size_tree.items():
