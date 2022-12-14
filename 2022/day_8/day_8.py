@@ -74,7 +74,6 @@ def main() -> None:
 
 	# Part Two
 	score_grid = grid_score_tree(grid)
-	print(score_grid)
 	print(max(map(max, score_grid)))
 
 
