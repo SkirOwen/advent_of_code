@@ -1,6 +1,4 @@
-import time
-
-from itertools import pairwise
+# from itertools import pairwise
 from typing import List, Optional
 
 
@@ -27,10 +25,14 @@ def gen_grid(lines: List, floor: bool) -> List:
 
 	if floor:
 		height += 2
-		width += 10
-		min_x += 2
+		extra_width = height + height - 1 + 10
+		# extra_width = abs(width - tri_number)
+		# print(min_x, extra_width, height)
+		# return
+		width += extra_width
+		min_x -= (extra_width // 2)
 
-		
+
 	grid = [["." for i in range(width + 1)] for j in range(height + 1)]
 	grid[0][500 - min_x] = "+"
 
@@ -41,19 +43,27 @@ def gen_grid(lines: List, floor: bool) -> List:
 
 			for x in range(min(x1, x2), max(x1, x2)+1):
 				for y in range(min(y1, y2), max(y1, y2) +1):
-					grid[y][x] = "#"
+					grid[y][x] = "\033[0;90m" + "#" + "\033[0m"
 	if floor:
 		for point in range(width + 1):
-			grid[-1][point] = "#"
+			grid[-1][point] = "\033[0;90m" + "#" + "\033[0m"
 
 	return grid
 
 
-def update_sand(grid: List, lines: List, sand_dropped: int) -> List:
-	sand_x, sand_y = [500, 1]
+def update_sand(grid: List, lines: List, sand_dropped: int, floor: Optional = False) -> List:
+	sand_x, sand_y = [500, 0]
 
 	min_x = min([coor[0] for path in lines for coor in path])
-
+	
+	if floor:
+		h = len(grid) - 1 	# For some reason I need to remove one
+		extra_width = h + h - 1 + 10
+		# extra_width = abs(len(grid[0]) - tri_number)
+		# print(min_x, extra_width, len(grid))
+		# return
+		min_x -= (extra_width // 2)
+	
 	sand_x = sand_x - min_x
 	is_moving = True
 	sand_path = [[sand_x, sand_y]]
@@ -68,6 +78,9 @@ def update_sand(grid: List, lines: List, sand_dropped: int) -> List:
 		under = grid[sand_y + 1][sand_x - 1: sand_x + 2]
 		# print(under)
 		# print(under[:2])
+		if grid[sand_y][sand_x] == "+" and under == ["o", "o", "o"]:
+			is_moving = False
+			return sand_path
 
 		if len(under) < 3:
 			is_moving = False
@@ -75,19 +88,19 @@ def update_sand(grid: List, lines: List, sand_dropped: int) -> List:
 		
 		if under[1] == ".":
 			# print(1)
-			grid[sand_y][sand_x] = "."
+			grid[sand_y][sand_x] = "." if sand_y != 0 else "+"
 			sand_x, sand_y = sand_x, sand_y + 1
 			grid[sand_y][sand_x] = "o"
 
-		elif under[:2] == [".", "o"] or under[:2] == [".", "#"]:
+		elif under[0] == ".":
 			# print(2)
-			grid[sand_y][sand_x] = "."
+			grid[sand_y][sand_x] = "." if sand_y != 0 else "+"
 			sand_x, sand_y = sand_x - 1, sand_y + 1
 			grid[sand_y][sand_x] = "o"
 
 		elif under[2] == ".":
 			# print(3)
-			grid[sand_y][sand_x] = "."
+			grid[sand_y][sand_x] = "." if sand_y != 0 else "+"
 			sand_x, sand_y = sand_x + 1, sand_y + 1
 			grid[sand_y][sand_x] = "o"
 		else:
@@ -95,23 +108,26 @@ def update_sand(grid: List, lines: List, sand_dropped: int) -> List:
 			is_moving = False
 
 		sand_path.append([sand_x, sand_y])
-		time.sleep(0.001)
+		# time.sleep(0.0001)
  
-		for i in range(len(grid) + 4):
-			print("\033[1A", end="\x1b[2K")
+		# for i in range(len(grid) + 4):
+		print("\033[1A" * (len(grid) + 6), end="\x1b[2K")
+
 		draw(grid, lines, sand_dropped)
 
 	# return sand_path
 
 
-def simulate(grid: List, lines: List, sand_dropped: int) -> int:
+def simulate(grid: List, lines: List, sand_dropped: int, floor: bool = False) -> int:
 	while True:
-		sand_path = update_sand(grid, lines, sand_dropped)
+		sand_path = update_sand(grid, lines, sand_dropped, floor)
 		if sand_dropped == sand_dropped + 1 or sand_path is not None:
 			break
 		sand_dropped += 1
 
 	draw(grid, lines, sand_dropped, sand_path)
+	if floor:
+		sand_dropped += 1
 
 	return sand_dropped
 
@@ -127,7 +143,7 @@ def draw(grid: List, lines: List, sand_dropped: int, sand_path: Optional = None)
 
 	if sand_path is not None:
 		for point in sand_path:
-			grid[point[1]][point[0]] = "~"
+			grid[point[1]][point[0]] = "\033[0;33m" + "~" + "\033[0m"
 
 	padding = "".ljust(len(str(len(grid))))
 	print(padding, *[x // 100 for x in range(min_x, max_x + 1)])
@@ -140,30 +156,30 @@ def draw(grid: List, lines: List, sand_dropped: int, sand_path: Optional = None)
 
 	print("\n")
 	print(f"- Sand Dropped > {sand_dropped} <".center((len(str(len(grid)))) + len(grid[0])))
-	print("\033[1A", end="\x1b[2K")
-	print("\033[1A", end="\x1b[2K")
+	# print("\033[1A", end="\x1b[2K")
+	# print("\033[1A", end="\x1b[2K")
 
 
 def main() -> None:
-	filename = "test.txt"
+	filename = "input.txt"
 	lines = []
 	with open(filename, "r") as f:
 		for line in f:
 			lines.append(line_parser(line))
 
 	# Part One
-	sand_dropped = 0
-	grid = gen_grid(lines, floor=False)
-	draw(grid, lines, sand_dropped)
-	sand_dropped = simulate(grid, lines, sand_dropped)
-	print(	print(f"- Sand Dropped > {sand_dropped} <".center((len(str(len(grid)))) + len(grid[0]))))
+	# sand_dropped = 0
+	# grid = gen_grid(lines, floor=False)
+	# draw(grid, lines, sand_dropped)
+	# sand_dropped = simulate(grid, lines, sand_dropped)
+	# print(f"- Sand Dropped > {sand_dropped} <".center((len(str(len(grid)))) + len(grid[0])))
 
 	# Part Two
 	sand_dropped = 0
 	grid = gen_grid(lines, floor=True)
 	draw(grid, lines, sand_dropped)
-	sand_dropped = simulate(grid, lines, sand_dropped)
-	print(	print(f"- Sand Dropped > {sand_dropped} <".center((len(str(len(grid)))) + len(grid[0]))))
+	sand_dropped = simulate(grid, lines, sand_dropped, floor=True)
+	print(f"- Sand Dropped > {sand_dropped} <".center((len(str(len(grid)))) + len(grid[0])))
 
 
 
