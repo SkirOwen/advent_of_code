@@ -1,4 +1,4 @@
-# from itertools import pairwise
+from itertools import pairwise
 from typing import List, Optional
 
 
@@ -23,6 +23,8 @@ def gen_grid(lines: List, floor: bool) -> List:
 	height = max(y_values)
 	width = max_x - min_x
 
+	obstacle = 0
+
 	if floor:
 		height += 2
 		extra_width = height + height - 1 + 10
@@ -44,11 +46,12 @@ def gen_grid(lines: List, floor: bool) -> List:
 			for x in range(min(x1, x2), max(x1, x2)+1):
 				for y in range(min(y1, y2), max(y1, y2) +1):
 					grid[y][x] = "\033[0;90m" + "#" + "\033[0m"
+					obstacle += 1
 	if floor:
 		for point in range(width + 1):
 			grid[-1][point] = "\033[0;90m" + "#" + "\033[0m"
 
-	return grid
+	return grid, obstacle
 
 
 def update_sand(grid: List, lines: List, sand_dropped: int, floor: Optional = False) -> List:
@@ -111,14 +114,16 @@ def update_sand(grid: List, lines: List, sand_dropped: int, floor: Optional = Fa
 		# time.sleep(0.0001)
  
 		# for i in range(len(grid) + 4):
-		print("\033[1A" * (len(grid) + 6), end="\x1b[2K")
+	print("\033[1A" * (len(grid) + 6), end="\x1b[2K")
 
-		draw(grid, lines, sand_dropped)
+	draw(grid, lines, sand_dropped)
 
 	# return sand_path
 
 
 def simulate(grid: List, lines: List, sand_dropped: int, floor: bool = False) -> int:
+
+
 	while True:
 		sand_path = update_sand(grid, lines, sand_dropped, floor)
 		if sand_dropped == sand_dropped + 1 or sand_path is not None:
@@ -169,14 +174,20 @@ def main() -> None:
 
 	# Part One
 	# sand_dropped = 0
-	# grid = gen_grid(lines, floor=False)
+	# grid, _ = gen_grid(lines, floor=False)
 	# draw(grid, lines, sand_dropped)
 	# sand_dropped = simulate(grid, lines, sand_dropped)
 	# print(f"- Sand Dropped > {sand_dropped} <".center((len(str(len(grid)))) + len(grid[0])))
 
 	# Part Two
 	sand_dropped = 0
-	grid = gen_grid(lines, floor=True)
+	grid, obstacle = gen_grid(lines, floor=True)
+	
+	# height = len(grid)
+	# width = height + height - 1
+	# area = height * width // 2 
+	# print(area - obstacle)
+
 	draw(grid, lines, sand_dropped)
 	sand_dropped = simulate(grid, lines, sand_dropped, floor=True)
 	print(f"- Sand Dropped > {sand_dropped} <".center((len(str(len(grid)))) + len(grid[0])))
