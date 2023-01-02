@@ -153,8 +153,8 @@ def draw(canvas: List, current_point: List, close_list: List, open_list: List, n
 		print(*pix)
 	
 	time.sleep(0.01)
-	for i in range(len(canvas)):
-		print("\033[1A", end="\x1b[2K")
+	# for i in range(len(canvas)):
+	print("\033[1A" * len(canvas), end="\x1b[2K")
 
 	if len(path) > 0:
 		for point in path:
@@ -163,8 +163,7 @@ def draw(canvas: List, current_point: List, close_list: List, open_list: List, n
 			for pix in canvas:
 				print(*pix)
 			time.sleep(0.001)
-			for i in range(len(canvas)):
-				print("\033[1A", end="\x1b[2K")
+			print("\033[1A" * len(canvas), end="\x1b[2K")
 
 
 def get_a_coord(grid: List) -> List:
