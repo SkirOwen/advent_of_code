@@ -221,19 +221,17 @@ def main() -> None:
 	# max_geode = max_geode_from_blueprint(blueprints[0])
 
 	# Part One
-	# with Pool(10) as p:
-	# 	max_geode_per_bp = p.map(max_geode_from_blueprint, blueprints)
+	with Pool(10) as p:
+		max_geode_per_bp = p.map(max_geode_from_blueprint, blueprints)
 
-	# print(max_geode_per_bp)
-	# # quality_lvl = quality_level(max_geode_per_bp)
-	#
-	# print(sum(quality_lvl))
+	print(max_geode_per_bp)
+	quality_lvl = quality_level(max_geode_per_bp)
+
+	print(sum(quality_lvl))
 	
 	# Part Two
 	max_geode_per_blueprint3 = [max_geode_from_blueprint(bp, 32) for bp in blueprints[:3]]
 	print(prod(max_geode_per_blueprint3))
-
-	print(max_geode)
 
 
 if __name__ == "__main__":
