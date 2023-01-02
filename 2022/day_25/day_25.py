@@ -8,16 +8,6 @@ def get_digit(character: str) -> int:
 			return int(character)
 
 
-def get_symbol(nbr: int) -> str:
-	match character:
-		case -2:
-			return "="
-		case -1:
-			return "-"
-		case other:
-			return str(character)
-
-
 def dec2snafu(nbr: int) -> str:
 	snafu = []
 	while nbr:
