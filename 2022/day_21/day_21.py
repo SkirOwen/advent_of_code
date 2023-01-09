@@ -6,14 +6,14 @@ from typing import List, Dict, Callable
 
 
 def sliding_window(iterable, n):
-    # sliding_window('ABCDEFG', 4) --> ABCD BCDE CDEF DEFG
-    it = iter(iterable)
-    window = collections.deque(islice(it, n), maxlen=n)
-    if len(window) == n:
-        yield tuple(window)
-    for x in it:
-        window.append(x)
-        yield tuple(window)
+	# sliding_window('ABCDEFG', 4) --> ABCD BCDE CDEF DEFG
+	it = iter(iterable)
+	window = collections.deque(islice(it, n), maxlen=n)
+	if len(window) == n:
+		yield tuple(window)
+	for x in it:
+		window.append(x)
+		yield tuple(window)
 
 
 def get_op(sign: str) -> Callable:
@@ -111,7 +111,6 @@ def change_to_humn(monkeys: Dict) -> Dict:
 				else:
 					humn_instr[key] = [moving, b, find_invers_op(operation)]
 
-
 	# remove root and rename
 	humn_instr.pop("root")
 	for k, v in humn_instr.items():
@@ -146,6 +145,7 @@ def main() -> None:
 	humn_val = calculate_monkey(humn_instr, monkey_id="humn")
 	print("humn val:", int(humn_val))
 	# 3093175982595
+
 
 if __name__ == "__main__":
 	main()

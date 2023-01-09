@@ -45,7 +45,7 @@ def get_time_grid(grid, blizzards: list) -> list:
 	width = len(grid[0])
 	height = len(grid)
 
-	reset_time = lcm(height - 2 , width - 2)
+	reset_time = lcm(height - 2, width - 2)
 
 	for i in range(1, reset_time):
 		new_blizards = []
@@ -216,7 +216,7 @@ def pathfinder(start_t: int, time_grid: list, start: complex, end: complex, grid
 
 			control_flag = 0
 			for point in stack:
-				if  (new_step[0] % len(time_grid)) == (point[0] % len(time_grid)) and new_step[1] == point[1]: # and g >= point[2]:
+				if (new_step[0] % len(time_grid)) == (point[0] % len(time_grid)) and new_step[1] == point[1]: # and g >= point[2]:
 					control_flag = 1
 
 			if control_flag == 0:

@@ -72,19 +72,19 @@ def find_empty(max_row_col: int, sensors: List, sensor_radius: List, distances: 
 
 				if direction == 0:		# Top Right
 					xp = xs + (distance + 1 - d)
-					yp = ys	- d
+					yp = ys - d
 
 				elif direction == 1:	# Top Left
 					xp = xs - (distance + 1 - d)
-					yp = ys	- d
+					yp = ys - d
 
 				elif direction == 2:	# Bottom Left
 					xp = xs - (distance + 1 - d)
-					yp = ys	+ d
+					yp = ys + d
 
 				else:					# Bottom Right
 					xp = xs + (distance + 1 - d)
-					yp = ys	+ d
+					yp = ys + d
 
 				if 0 <= xp <= max_row_col and 0 <= yp <= max_row_col and (xp, yp) not in check_point:
 					is_found = all(

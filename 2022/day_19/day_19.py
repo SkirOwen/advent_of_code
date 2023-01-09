@@ -41,7 +41,6 @@ def get_potential_robots(blueprint: Dict, state: Dict, max_robots: Dict) -> List
 			elif state[robot_type] < max_robots[robot_type]:
 				potential_robots.append(robot_type)
 
-
 	if "geode_robot" in potential_robots:
 		return ["geode_robot"]
 	return potential_robots
@@ -86,7 +85,7 @@ def build_robot_and_update(blueprint: Dict, state: Dict, robot_type: str) -> Dic
 	new_state["ore"] -= ore_cost
 	new_state["clay"] -= clay_cost
 	new_state["obsidian"] -= obsidian_cost
-	#update
+	# update
 	new_state["time"] += 1
 	# new_state["parent"] = state.copy()
 	new_state["ore"] += state["ore_robot"]
@@ -151,7 +150,7 @@ def max_geode_from_blueprint(blueprint: Dict, total_time: int = 24, return_schem
 
 			# print(max_geode_obtain(state, total_time))
 			if max_geode_obtain(state, total_time) < max_geode[t]:
-			 # or state["geode"] != max_geode:
+				# or state["geode"] != max_geode:
 				# comparing the state geode to max works only in depth-first if trying to create geodes bots first
 				# print(max_geode_obtain(state, total_time), max_geode)
 				continue

@@ -31,11 +31,11 @@ def pathfinder(grid: List, start: List, end: List) -> List:
 
 	open_list.append({
 			"pos": start,
-	 		"f": 0,
-	 		"h": 0,
-	 		"g": 0,
-	 		"parent": None
-	 	})
+			"f": 0,
+			"h": 0,
+			"g": 0,
+			"parent": None
+		})
 	previous_node = None
 
 	while len(open_list) > 0:
@@ -90,11 +90,11 @@ def pathfinder(grid: List, start: List, end: List) -> List:
 
 			if control_flag == 0:
 				open_list.append({
-				"pos": neighbour,
-				"f": f,
-				"h": h,
-				"g": g,
-				"parent": current_point
+					"pos": neighbour,
+					"f": f,
+					"h": h,
+					"g": g,
+					"parent": current_point
 				})
 
 		draw(
@@ -145,7 +145,6 @@ def draw(canvas: List, current_point: List, close_list: List, open_list: List, n
 			colour = pure_red
 		canvas[y][x] = colour + canvas[y][x] + reset_colour
 
-
 	canvas[start[1]][start[0]] = dark_cyan + "S" + reset_colour
 	canvas[start[1]][start[0]] = dark_cyan + "E" + reset_colour
 
@@ -192,7 +191,6 @@ def main() -> None:
 
 			grid.append(grid_y)
 
-
 	# Part One
 	path = pathfinder(grid, start, end)
 	print(path)
@@ -208,6 +206,7 @@ def main() -> None:
 			potential_path.append(len(path)-1)
 	print(potential_path)
 	print(min(potential_path))
+
 
 if __name__ == "__main__":
 	main()

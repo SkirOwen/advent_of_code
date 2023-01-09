@@ -66,9 +66,9 @@ def get_face_neighbours(face_idx: dict, face_div: float) -> dict:
 		# if row/col +-2 and col/row +-1 and is (row/col +-1, col/row +-1) => NO 
 		opposite_faces = [
 			[face + complex(2, 1), face + complex(1, 1), face + 1],
-			[face + complex(-2, 1), face + complex(-1, 1), face -1],
+			[face + complex(-2, 1), face + complex(-1, 1), face - 1],
 			[face + complex(2, -1), face + complex(1, -1), face + 1],
-			[face + complex(-2, -1), face + complex(-1, -1), face -1],
+			[face + complex(-2, -1), face + complex(-1, -1), face - 1],
 
 			[face + complex(1, 2), face + complex(1, 1), face + 1j],
 			[face + complex(-1, 2), face + complex(-1, 1), face + 1j],
@@ -189,13 +189,13 @@ def find_cube_wrap(mov: complex, rot: int, pos: complex, open_tiles: list[comple
 	rel_a = (a % face_size)
 	rel_b = (b % face_size)
 	# print(a, rel_a, b, rel_b)
-#### a and b needs to be the relative position in the new face
+	# a and b needs to be the relative position in the new face
 
 	if arriving_rot == 0:
 		new_a = arriving_face_coor.real * face_size
 		ar_rot = 2
 		if leaving_rot == 0:
-			new_b = arriving_face_coor.imag * face_size - (rel_b - 1) if is_flip else arriving_face_coor.imag * face_size - face_size + rel_b ## cant 00 false
+			new_b = arriving_face_coor.imag * face_size - (rel_b - 1) if is_flip else arriving_face_coor.imag * face_size - face_size + rel_b # cant 00 false
 		elif leaving_rot == 1:
 			new_b = arriving_face_coor.imag * face_size - (rel_a - 1) if is_flip else arriving_face_coor.imag * face_size - face_size + rel_a #
 		elif leaving_rot == 2:
@@ -299,7 +299,6 @@ def follow_instruction(grid: list[list, list], instruction: list, start: list[co
 						break
 				else:
 					break
-
 
 		# print(pos, rot, ins, log)
 	return pos, rot

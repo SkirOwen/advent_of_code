@@ -5,14 +5,14 @@ from typing import Tuple, Iterable
 
 def sliding_window(iterable: Iterable, n: int) -> Tuple:
 	# https://docs.python.org/3/library/itertools.html#itertools-recipes
-    # sliding_window('ABCDEFG', 4) --> ABCD BCDE CDEF DEFG
-    it = iter(iterable)
-    window = deque(islice(it, n), maxlen=n)
-    if len(window) == n:
-        yield tuple(window)
-    for x in it:
-        window.append(x)
-        yield tuple(window)
+	# sliding_window('ABCDEFG', 4) --> ABCD BCDE CDEF DEFG
+	it = iter(iterable)
+	window = deque(islice(it, n), maxlen=n)
+	if len(window) == n:
+		yield tuple(window)
+	for x in it:
+		window.append(x)
+		yield tuple(window)
 
 
 def find_marker(message: Iterable, len_of_packet: int) -> int:

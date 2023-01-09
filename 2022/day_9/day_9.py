@@ -77,7 +77,7 @@ def update(instruction: Tuple, h_position: List, t_positions: List, hist_of_t: L
 			if check_update_t(prev_t, t_position):
 				update_t(prev_t, t_position)
 
-				if not(t_position in hist_of_t[i]):
+				if not (t_position in hist_of_t[i]):
 					hist_of_t[i].append(t_position.copy())
 			prev_t = t_position
 		# diagram_print(h_position, t_positions, height, width)

@@ -49,7 +49,7 @@ def falling_tower(rocks: List, winds: List, nbr_fallen: int) -> List:
 			# print(sum(fallen_rocks, []))
 			# print(f"{place_free = }")
 
-			if  all(0 <= fall_pos.imag for fall_pos in fall_posistion) and place_free:
+			if all(0 <= fall_pos.imag for fall_pos in fall_posistion) and place_free:
 				# print("fell")
 				rock_position = fall_posistion
 			else:
@@ -94,7 +94,7 @@ def draw(fallen_rocks: List) -> List:
 
 		bin_lst.insert(0, bin_row)
 		
-		row_nbr = str(len(grid) - i -1).rjust(len(str(len(grid))))
+		row_nbr = str(len(grid) - i-1).rjust(len(str(len(grid))))
 		print("|", *row, "|", row_nbr, bin_row)						# printing the grid row by row
 	print("+ - - - - - - - +")
 	
@@ -189,9 +189,9 @@ def get_rock_in_undershoot(undershoot_rocks: int, pattern_length: int, rocks_in_
 	# count height of undershoot rocks in pattern
 	starting_rock_pattern = fallen_rocks[rocks_in_trans]
 	# need to take the height after the next undershoot_rock
-	last_rock = fallen_rocks[rocks_in_trans + undershoot_rocks -1]
+	last_rock = fallen_rocks[rocks_in_trans + undershoot_rocks - 1]
 	z_last = max([int(pos.imag) for pos in last_rock])
-	return z_last - transition_length +1
+	return z_last - transition_length + 1
 
 
 def get_height_from_cycle(
@@ -246,7 +246,6 @@ def main() -> None:
 	print(f"tower height after {nbr_to_fall}: {tower_height}")
 	bin_lst = draw(fallen_rocks)
 
-
 	# Part Two
 	transition_length, pattern_length = find_repeat_length(bin_lst)
 	print(transition_length, pattern_length, pattern_length + transition_length)
@@ -257,7 +256,6 @@ def main() -> None:
 	# nbr_to_fall = 2022
 	height = get_height_from_cycle(rocks_in_trans, transition_length, rocks_in_pattern, pattern_length, nbr_to_fall, fallen_rocks, rock_nbrs)
 	print(height)
-
 
 
 if __name__ == "__main__":
