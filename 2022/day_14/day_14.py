@@ -34,7 +34,6 @@ def gen_grid(lines: List, floor: bool) -> List:
 		width += extra_width
 		min_x -= (extra_width // 2)
 
-
 	grid = [["." for i in range(width + 1)] for j in range(height + 1)]
 	grid[0][500 - min_x] = "+"
 
@@ -112,7 +111,7 @@ def update_sand(grid: List, lines: List, sand_dropped: int, floor: Optional = Fa
 
 		sand_path.append([sand_x, sand_y])
 		# time.sleep(0.0001)
- 
+
 		# for i in range(len(grid) + 4):
 	print("\033[1A" * (len(grid) + 6), end="\x1b[2K")
 
@@ -122,7 +121,6 @@ def update_sand(grid: List, lines: List, sand_dropped: int, floor: Optional = Fa
 
 
 def simulate(grid: List, lines: List, sand_dropped: int, floor: bool = False) -> int:
-
 
 	while True:
 		sand_path = update_sand(grid, lines, sand_dropped, floor)
@@ -191,7 +189,6 @@ def main() -> None:
 	draw(grid, lines, sand_dropped)
 	sand_dropped = simulate(grid, lines, sand_dropped, floor=True)
 	print(f"- Sand Dropped > {sand_dropped} <".center((len(str(len(grid)))) + len(grid[0])))
-
 
 
 if __name__ == "__main__":

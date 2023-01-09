@@ -47,7 +47,7 @@ def get_adj_mat(valves: Dict) -> List:
 
 def get_dis_mat(adj_mat: List) -> List:
 	size = len(adj_mat)
-	dis_mat = [[0 if i==j else 10000 for i in range(size)] for j in range(size)]
+	dis_mat = [[0 if i == j else 10000 for i in range(size)] for j in range(size)]
 	
 	for j in range(size):
 		for i in range(size):
@@ -126,7 +126,6 @@ def simulation_elephants(valves: List) -> List:
 				if p.pressure + e.pressure > max_pressure:
 					max_pressure = p.pressure + e.pressure
 	return max_pressure
-
 
 
 def main() -> None:

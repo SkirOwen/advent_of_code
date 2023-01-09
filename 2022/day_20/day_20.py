@@ -21,11 +21,7 @@ def mix(coor: List, nbr_mix: int = 1, decryption_key: int = 1) -> List:
 				# cant insert at -1, it will insert(-1, x) will put at -2
 				# so uses append to fix at the nbr
 				# mirror the problem
-			 	values.append(nbr)
-			 	# print(idx_insert)
-			# print(idx_insert)
-		# print(*[v[0] for v in values])
-		# print("")
+				values.append(nbr)
 
 	return [v[0] for v in values]
 

@@ -1,4 +1,5 @@
 import re
+from scipy.optimize import linprog
 from typing import List, Dict
 
 
@@ -31,7 +32,6 @@ def check_in_hull(cubes: List, point: List) -> bool:
 	# https://stackoverflow.com/a/43564754/9931399
 	# method using convex combination
 	# linprog min c 
-	from scipy.optimize import linprog
 
 	n_cubes = len(cubes)
 	n_dim = len(point)
@@ -63,15 +63,15 @@ def get_inside_cubes(cubes: List) -> List:
 	candidate_point = point_inside_hull.copy()
 	
 	while True:		
-	# looping to remove potential "shelling" on the side of the hull that would still be counted
-	# in the hull
-	# Since the convex hull is defined as the most exterior points 
+		# looping to remove potential "shelling" on the side of the hull that would still be counted
+		# in the hull
+		# Since the convex hull is defined as the most exterior points
 		inside_cubes = []
 		for point in candidate_point:
 			x, y, z = point
 			sides = [[x, y, z+1], [x, y, z-1], [x, y+1, z], [x, y-1, z], [x+1, y, z], [x-1, y, z]]
 			is_next_to_air = all([((side in cubes) or (side in candidate_point)) for side in sides])
-			
+
 			if is_next_to_air: 	# it there empty space next to point_inisde_hull
 				inside_cubes.append(point)
 

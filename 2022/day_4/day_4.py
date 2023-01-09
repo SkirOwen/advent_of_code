@@ -2,6 +2,7 @@ import re
 
 from typing import Tuple
 
+
 def check_subset(range1: Tuple, range2: Tuple) -> bool:
 	range2_subset_of_1 = range1[0] <= range2[0] and range1[1] >= range2[1]
 	range1_subset_of_2 = range2[0] <= range1[0] and range2[1] >= range1[1]

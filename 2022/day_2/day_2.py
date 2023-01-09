@@ -10,6 +10,7 @@ def score_round(op_play: str, your_play: str) -> int:
 	else:
 		return 0
 
+
 def score_shape(play: str) -> int:
 	match play:
 		case "A":
