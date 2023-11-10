@@ -14,14 +14,13 @@ from typing import Iterable, Generator, Sequence
 CHUNK_SIZE = 1024
 
 
-def get_token(config_file: str="config.toml") -> str:
-    """Get token from TOML config file"""
-    # Read config to get connexion settings (ie: token)
-    path = os.path.join(os.path.dirname(__file__), config_file)
-    print(path)
-    with open(path, "rb") as f:
-        CONFIG = tomllib.load(f)
-    return CONFIG['session']
+def get_token(config_file: str = "config.toml") -> str:
+	"""Get token from TOML config file"""
+	# Read config to get connexion settings (ie: token)
+	path = os.path.join(os.path.dirname(__file__), config_file)
+	with open(path, "rb") as f:
+	    CONFIG = tomllib.load(f)
+	return CONFIG['session']
 
 
 def _get_response_size(resp: HTTPResponse) -> None | int:
