@@ -53,23 +53,10 @@ def download_input(year: int | str, day: int | str) -> None:
 	a_request.add_header("Cookie", f"session={get_token()}")
 	response = urllib.request.urlopen(a_request)
 	chunks = _get_chunks(response)
-	# pbar = tqdm(
-	# 	desc=f"[{task}/{total}] Requesting ",
-	# 	unit="B",
-	# 	total=_get_response_size(response),
-	# 	unit_scale=True,
-	# 	# format to have current/total size with the full unit, e.g. 60kB/6MB
-	# 	# https://github.com/tqdm/tqdm/issues/952
-	# 	bar_format="{l_bar}{bar}| {n_fmt}{unit}/{total_fmt}{unit}"
-	# 	           " [{elapsed}<{remaining}, {rate_fmt}{postfix}]"
-	# )
-	# with pbar as t:
+
 	with open(path, "wb") as file:
 		for chunk in chunks:
 			file.write(chunk)
-			# t.update(len(chunk))
-		# if done_event.is_set():
-		# 	return
 	print(f"Downloaded in {path}")
 
 
