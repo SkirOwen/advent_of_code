@@ -14,6 +14,12 @@ from typing import Iterable, Generator, Sequence
 CHUNK_SIZE = 1024
 
 
+def guarantee_existence(path: str) -> str:
+	if not os.path.exists(path):
+		os.makedirs(path)
+	return os.path.abspath(path)
+
+
 def get_token(config_file: str = "config.toml") -> str:
 	"""Get token from TOML config file"""
 	# Read config to get connexion settings (ie: token)
@@ -46,7 +52,7 @@ def _get_chunks(resp: HTTPResponse) -> Generator[bytes, None]:
 
 def download_input(year: int | str, day: int | str) -> None:
 	url = f"https://adventofcode.com/{year}/day/{day}/input"
-	path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"{year}", f"day_{day:02}", "input.txt"))
+	path = os.path.join(guarantee_existence(os.path.join(os.path.dirname(__file__), f"{year}", f"day_{day:02}")), "input.txt")
 
 	# response = urllib.request.urlopen(url)
 	a_request = urllib.request.Request(url)
@@ -61,7 +67,7 @@ def download_input(year: int | str, day: int | str) -> None:
 
 
 def main():
-	download_input(year=2021, day=1)
+	download_input(year=2021, day=3)
 
 
 if __name__ == '__main__':
