@@ -129,10 +129,8 @@ def get_valide_nbr(numbers, grid) -> list[int]:
 	return valide_nbr
 
 
-
 def nbr_near_gear(gear_pos, numbers):
 	gear_row, gear_col = gear_pos
-	# print(f"{gear_pos = }")
 
 	row_nbr_near = []
 	near_rows = [gear_row - 1, gear_row, gear_row + 1]
@@ -156,12 +154,7 @@ def nbr_near_gear(gear_pos, numbers):
 				# print(val)
 				nbrs.append(int(val))
 
-
-	# print(row_nbr_near)
-	# print(possible_numbers_per_row)
-	# print(nbrs)
 	return nbrs
-
 
 
 def get_gear_ratio(gears, numbers) -> list[int]:
@@ -175,9 +168,6 @@ def get_gear_ratio(gears, numbers) -> list[int]:
 				gear_ratios.append(nbrs_ajd[0] * nbrs_ajd[1])
 
 	return gear_ratios
-
-
-
 
 
 def main() -> None:
