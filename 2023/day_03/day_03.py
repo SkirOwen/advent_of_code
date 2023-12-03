@@ -52,20 +52,18 @@ def parse_line(line: str) -> tuple[list[int], dict[int, str]]:
 
 	if len(idx_nbr) != 0:
 		idx_nbr = combine_near_digits(idx_nbr)
-	print(f"{idx_gear = }")
 
 	return idx_gear, idx_nbr
 
 
 def parse_lines(lines: list[str]):
 	gears = []
-	numbers = []
+	numbers = dict()
 
 	for i, line in enumerate(lines):
 		idx_gears, idx_nbr = parse_line(line)
 		gears.append(idx_gears)
-		numbers.append(idx_nbr)
-	print(gears)
+		numbers[i] = idx_nbr
 
 	return gears, numbers
 
@@ -121,7 +119,7 @@ def is_symb_near(pos: tuple(int), nbr: str, grid: list) -> bool:
 
 def get_valide_nbr(numbers, grid) -> list[int]:
 	valide_nbr = []
-	for i, number_line in enumerate(numbers):
+	for i, number_line in numbers.items():
 		if len(number_line) == 0:
 			continue
 		for idx, nbr in number_line.items():
@@ -134,7 +132,7 @@ def get_valide_nbr(numbers, grid) -> list[int]:
 
 def nbr_near_gear(gear_pos, numbers):
 	gear_row, gear_col = gear_pos
-	print(f"{gear_pos = }")
+	# print(f"{gear_pos = }")
 
 	row_nbr_near = []
 	near_rows = [gear_row - 1, gear_row, gear_row + 1]
@@ -142,44 +140,48 @@ def nbr_near_gear(gear_pos, numbers):
 	nbrs = []
 
 	for r in near_rows:
-		if 0 < r < len(numbers):
-			if len(numbers[r]) >= 0:
-				print("a")
+		if 0 <= r < len(numbers):
+			if len(numbers[r]) > 0:
+				# print("a")
 				row_nbr_near.append(r)
 
-	col_nbr_near = []
-	near_cols = [gear_col - 1, gear_col, gear_col + 1]
-		
-	for c in near_cols:
-		nbr_r = [numbers[i] for i in row_nbr_near]
-		print("r", nbr_r)
-		for nbr_c in nbr_r:
-			print("nbrc", nbr_c)
-			if c in nbr_c:
-				print("c", c)
-				print("appended")
-				nbr_pos.append((r, c))
-				print("n", numbers[r])
-				# nbrs.append(numbers[r][c])
+	possible_numbers_per_row = [numbers[r] for r in row_nbr_near]
 
-	print(row_nbr_near)
-	print(nbr_pos)
+	for row_nbr in possible_numbers_per_row:
+		for col_nbr, val in row_nbr.items():
+			# print(col_nbr, val)
+			nbr_size = len(val) - 1
 
+			if col_nbr - 1 <= gear_col <= col_nbr + nbr_size + 1:
+				# print(val)
+				nbrs.append(int(val))
+
+
+	# print(row_nbr_near)
+	# print(possible_numbers_per_row)
+	# print(nbrs)
+	return nbrs
 
 
 
-def valide_gear(gears, numbers) -> list[int]:
-	
+def get_gear_ratio(gears, numbers) -> list[int]:
+	gear_ratios = []
+
 	for r, gear_row in enumerate(gears):
 		for gear_col in gear_row:
 			gear_pos = (r, gear_col)
-			nbr_near_gear(gear_pos, numbers)
+			nbrs_ajd = nbr_near_gear(gear_pos, numbers)
+			if len(nbrs_ajd) == 2:
+				gear_ratios.append(nbrs_ajd[0] * nbrs_ajd[1])
+
+	return gear_ratios
+
 
 
 
 
 def main() -> None:
-	filename = "test.txt"
+	filename = "input.txt"
 
 	with open(filename, "r") as f:
 		lines = [line.strip() for line in f]
@@ -189,7 +191,8 @@ def main() -> None:
 	valide_nbr = get_valide_nbr(numbers, lines)
 	print(f"Part I: {sum(valide_nbr)}")
 
-	near_gear_nbr = valide_gear(gears, numbers)
+	gear_ratio = get_gear_ratio(gears, numbers)
+	print(f"Part II: {sum(gear_ratio)}")
 
 
 if __name__ == "__main__":
