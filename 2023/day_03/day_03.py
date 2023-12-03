@@ -38,37 +38,37 @@ def combine_near_digits(idx_nbr: list[int, str]) -> dict[int, str]:
 	return combined_idx_nbr
 
 
-def parse_line(line: str) -> tuple[dict[int, str], dict[int, str]]:
+def parse_line(line: str) -> tuple[list[int], dict[int, str]]:
 	print(line)
 
 	idx_nbr = []
-	idx_symb = dict()
+	idx_gear = []
 
 	for i, c in enumerate(line):
 		if c.isdigit():
 			# Storing the individual number in a list so after can easily combine them
 			idx_nbr.append((i, c))
-		elif c != ".":
-			idx_symb[i] = c
+		elif c == "*":
+			idx_gear.append(i)
 
 	if len(idx_nbr) != 0:
 		idx_nbr = combine_near_digits(idx_nbr)
-	print(idx_symb)
+	print(idx_gear)
 	print(idx_nbr)
 
-	return idx_symb, idx_nbr
+	return idx_gear, idx_nbr
 
 
 def parse_lines(lines: list[str]):
-	symbols = []
+	gears = []
 	numbers = []
 
 	for i, line in enumerate(lines):
-		idx_symb, idx_nbr = parse_line(line)
-		symbols.append(idx_symb)
+		idx_gears, idx_nbr = parse_line(line)
+		gears.append(idx_gears)
 		numbers.append(idx_nbr)
 
-	return symbols, numbers
+	return gears, numbers
 
 
 def is_symb_near(pos: tuple(int), nbr: str, grid: list) -> bool:
@@ -125,7 +125,7 @@ def is_symb_near(pos: tuple(int), nbr: str, grid: list) -> bool:
 	return is_near
 
 
-def get_valide_nbr(numbers, grid):
+def get_valide_nbr(numbers, grid) -> list[int]:
 	valide_nbr = []
 	for i, number_line in enumerate(numbers):
 		if len(number_line) == 0:
@@ -137,6 +137,14 @@ def get_valide_nbr(numbers, grid):
 	return valide_nbr
 
 
+def valide_gear(gears, numbers) -> list[int]:
+	for gear_row in gears:
+		if (gear_row in numbers) or (gear_row - 1 in numbers) or (gear_row + 1 in numbers):
+			for gear_col in gear_row:
+
+
+
+
 def main() -> None:
 	filename = "input.txt"
 
@@ -145,7 +153,7 @@ def main() -> None:
 
 	print(lines)
 
-	symbols, numbers = parse_lines(lines)
+	gears, numbers = parse_lines(lines)
 
 	valide_nbr = get_valide_nbr(numbers, lines)
 	print(valide_nbr)
