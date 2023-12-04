@@ -39,19 +39,23 @@ def get_copy_cards(lines: list) -> list:
 	# Part II
 	cards = []
 
-	for card_id, line in enumerate(lines):
+	for card_id, line in enumerate(lines, start=1):
 		win_nbr, nbr = parse_card(line)
 		matching_nbrs = get_matching_nbr(win_nbr, nbr)
+		copy_of_card = cards.count(card_id) + 1
+		
 		cards.append(card_id)
 
-		print(len(matching_nbrs))
-		print(f"card {card_id}\n{len(matching_nbrs)}")
-		for j in range(card_id + 1, card_id + len(matching_nbrs) + 1):
-			print(j)
+		# print(f"card: {card_id} | copy: {copy_of_card} | nbr: {len(matching_nbrs)}")
+		for c in range(copy_of_card):
+			for j in range(card_id + 1, card_id + len(matching_nbrs) + 1):
+				cards.append(j)
+				# print(j)
 
-		print("---")
+		# print("cards:", sorted(cards))
+		# print("---")
 
-	return points
+	return cards
 
 
 def main() -> None:
@@ -66,6 +70,8 @@ def main() -> None:
 	print(f"Part I: {sum(points)}\n")
 
 	all_cards = get_copy_cards(lines)
+	# for card in set(all_cards):
+	# 	print(card, all_cards.count(card))
 	print(f"Part II: {len(all_cards)}")
 
 
