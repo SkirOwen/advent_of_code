@@ -55,18 +55,18 @@ def _get_copy_cards(lines: list) -> list:
 	return cards
 
 def get_copy_cards(lines: list) -> list:
-	"""Improved version using dictionary to remove the need of count."""
-	cards = {card_id: 0 for card_id in range(1, len(lines) + 1)}
+	"""Improved version using a list to remove the need of count by using the index"""
+	cards = [0 for card_id in range(len(lines))]
 
 	for card_id, line in enumerate(lines, start=1):
 		win_nbr, nbr = parse_card(line)
 		matching_nbrs = get_matching_nbr(win_nbr, nbr)
-		copy_of_card = cards[card_id] + 1
+		copy_of_card = cards[card_id - 1] + 1
 		
-		cards[card_id] += 1
+		cards[card_id - 1] += 1
 
 		for j in range(card_id + 1, card_id + len(matching_nbrs) + 1):
-			cards[j] += copy_of_card
+			cards[j - 1] += copy_of_card
 
 	return cards
 
@@ -81,7 +81,7 @@ def main() -> None:
 	print(f"Part I: {sum(points)}\n")
 
 	all_cards = get_copy_cards(lines)
-	print(f"Part II: {sum(all_cards.values())}")
+	print(f"Part II: {sum(all_cards)}")
 
 
 if __name__ == "__main__":
