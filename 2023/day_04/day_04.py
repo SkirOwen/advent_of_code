@@ -65,14 +65,8 @@ def get_copy_cards(lines: list) -> list:
 		
 		cards[card_id] += 1
 
-		# print(f"card: {card_id} | copy: {copy_of_card} | nbr: {len(matching_nbrs)}")
-		for c in range(copy_of_card):
-			for j in range(card_id + 1, card_id + len(matching_nbrs) + 1):
-				cards[j] += 1
-				# print(j)
-
-		# print("cards:", cards)
-		# print("---")
+		for j in range(card_id + 1, card_id + len(matching_nbrs) + 1):
+			cards[j] += copy_of_card
 
 	return cards
 
