@@ -35,8 +35,10 @@ def point_for_cards(lines: list) -> list[int]:
 	return points
 
 
-def get_copy_cards(lines: list) -> list:
-	# Part II
+def _get_copy_cards(lines: list) -> list:
+	"""Old brute-force approach.
+	Uses list and the count method so really slow.
+	"""
 	cards = []
 
 	for card_id, line in enumerate(lines, start=1):
@@ -46,13 +48,30 @@ def get_copy_cards(lines: list) -> list:
 		
 		cards.append(card_id)
 
-		# print(f"card: {card_id} | copy: {copy_of_card} | nbr: {len(matching_nbrs)}")
 		for c in range(copy_of_card):
 			for j in range(card_id + 1, card_id + len(matching_nbrs) + 1):
 				cards.append(j)
+
+	return cards
+
+def get_copy_cards(lines: list) -> list:
+	"""Improved version using dictionary to remove the need of count."""
+	cards = {card_id: 0 for card_id in range(1, len(lines) + 1)}
+
+	for card_id, line in enumerate(lines, start=1):
+		win_nbr, nbr = parse_card(line)
+		matching_nbrs = get_matching_nbr(win_nbr, nbr)
+		copy_of_card = cards[card_id] + 1
+		
+		cards[card_id] += 1
+
+		# print(f"card: {card_id} | copy: {copy_of_card} | nbr: {len(matching_nbrs)}")
+		for c in range(copy_of_card):
+			for j in range(card_id + 1, card_id + len(matching_nbrs) + 1):
+				cards[j] += 1
 				# print(j)
 
-		# print("cards:", sorted(cards))
+		# print("cards:", cards)
 		# print("---")
 
 	return cards
@@ -64,15 +83,11 @@ def main() -> None:
 	with open(filename, "r") as f:
 		lines = [line.strip() for line in f]
 
-	# parse_card(lines[1])
 	points = point_for_cards(lines)
-	print(points)
 	print(f"Part I: {sum(points)}\n")
 
 	all_cards = get_copy_cards(lines)
-	# for card in set(all_cards):
-	# 	print(card, all_cards.count(card))
-	print(f"Part II: {len(all_cards)}")
+	print(f"Part II: {sum(all_cards.values())}")
 
 
 if __name__ == "__main__":
