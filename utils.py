@@ -4,10 +4,11 @@ import os.path
 import tomllib
 import urllib.request
 import urllib.error
+import shutil
 
 from concurrent.futures import ThreadPoolExecutor
 from http.client import HTTPResponse
-# from tqdm.auto import tqdm
+from datetime import date
 
 from typing import Iterable, Generator, Sequence
 
@@ -27,7 +28,6 @@ def get_token(config_file: str = "config.toml") -> str:
 	with open(path, "rb") as f:
 	    CONFIG = tomllib.load(f)
 	return CONFIG['session']
-
 
 def _get_response_size(resp: HTTPResponse) -> None | int:
 	"""
@@ -66,8 +66,23 @@ def download_input(year: int | str, day: int | str) -> None:
 	print(f"Downloaded in {path}")
 
 
+def init_day(year: int | str, day: int | str) -> None:
+	template_path = os.path.join(os.path.dirname(__file__), "utils", "template.py")
+	code_path = os.path.join(guarantee_existence(os.path.join(os.path.dirname(__file__), f"{year}", f"day_{day:02}")), f"day_{day:02}.py")
+
+	if not os.path.exists(code_path):
+		print("day code file created")
+		shutil.copyfile(template_path, code_path)
+
+
 def main():
-	download_input(year=2021, day=3)
+	today = date.today()
+	year = today.year
+	day = today.day
+	year = 2021
+	day = 4
+	download_input(year=year, day=day)
+	init_day(year=year, day=day)
 
 
 if __name__ == '__main__':
