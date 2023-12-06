@@ -79,8 +79,6 @@ def main():
 	today = date.today()
 	year = today.year
 	day = today.day
-	year = 2021
-	day = 4
 	download_input(year=year, day=day)
 	init_day(year=year, day=day)
 
