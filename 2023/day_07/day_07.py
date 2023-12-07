@@ -27,10 +27,7 @@ def get_hand(card: str, joker: bool) -> int:
 	This will return a number for odering, so it is easier 
 	to know which is hand is better than another.
 	"""
-	print(card)
 	card_occ = dict(Counter(card))		# Occurence, same as np.unique but in a dict
-	print(card_occ)
-	print(len(card_occ))
 
 	if joker and "J" in card_occ:
 		j = card_occ["J"]
@@ -38,7 +35,6 @@ def get_hand(card: str, joker: bool) -> int:
 			card_occ.pop("J", None)
 			best_card = get_best_card(card_occ)
 			card_occ[best_card] += j
-		print("sub j", card_occ, j)
 	else:
 		j = 0
 
@@ -70,7 +66,6 @@ def get_hand(card: str, joker: bool) -> int:
 		# High card
 		hand = 1
 
-	print("hand", hand)
 	return hand
 	
 
@@ -94,12 +89,8 @@ def card2nbr(c: str, joker: bool) -> int:
 
 
 def compare_cards(card_1: str, card_2: str, joker: bool = False) -> int:
-	print(joker)
-	print(card_1, card_2)
 	hand_type_1 = get_hand(card_1, joker=joker)
 	hand_type_2 = get_hand(card_2, joker=joker)
-
-	print(hand_type_1, hand_type_2)
 
 	c = 0
 	while hand_type_1 == hand_type_2:
@@ -123,7 +114,6 @@ def get_card_rank(card_bid, joker: bool = False):
 			partial(compare_cards, joker=joker)
 			)(pair[0])
 		)
-	print(card_sorted)
 	return card_sorted
 
 
@@ -141,10 +131,7 @@ def main() -> None:
 		lines = [line.strip() for line in f]
 
 	card_bid = parse_lines(lines)
-	# print(card_bid)
 
-	cmp = compare_cards(card_bid[0][0], card_bid[1][0])
-	print(cmp)
 	card_sorted = get_card_rank(card_bid)
 	total_winnings = get_total_winnings(card_sorted)
 	print(f"Part I: {total_winnings}")
@@ -152,7 +139,7 @@ def main() -> None:
 	joker = True
 	card_sorted = get_card_rank(card_bid, joker=joker)
 	total_winnings = get_total_winnings(card_sorted)
-	print(f"Part II: {total_winnings}") # 252133090 high
+	print(f"Part II: {total_winnings}") 
 
 
 if __name__ == "__main__":
