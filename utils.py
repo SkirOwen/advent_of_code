@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import os.path
 import tomllib
 import urllib.request
@@ -77,10 +78,13 @@ def init_day(year: int | str, day: int | str) -> None:
 
 def main():
 	today = date.today()
-	year = today.year
-	day = today.day
-	download_input(year=year, day=day)
-	init_day(year=year, day=day)
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-y", "--year", type=int, default=today.year)
+	parser.add_argument("-d", "--day", type=int, default=today.day)
+	args = parser.parse_args()
+	
+	download_input(year=args.year, day=args.day)
+	init_day(year=args.year, day=args.day)
 
 
 if __name__ == '__main__':
