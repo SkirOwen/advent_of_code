@@ -49,7 +49,7 @@ def main() -> None:
 	print(f"Part I: {result_1}")
 
 	result_2 = find_similarity(lines)
-	print(f"Part I: {result_2}")
+	print(f"Part II: {result_2}")
 
 
 
