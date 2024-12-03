@@ -72,8 +72,10 @@ def init_day(year: int | str, day: int | str) -> None:
 	code_path = os.path.join(guarantee_existence(os.path.join(os.path.dirname(__file__), f"{year}", f"day_{day:02}")), f"day_{day:02}.py")
 
 	if not os.path.exists(code_path):
-		print("day code file created")
+		print("Day code file created")
 		shutil.copyfile(template_path, code_path)
+
+	return code_path
 
 
 def main():
@@ -84,7 +86,9 @@ def main():
 	args = parser.parse_args()
 	
 	download_input(year=args.year, day=args.day)
-	init_day(year=args.year, day=args.day)
+	code_path = init_day(year=args.year, day=args.day)
+
+	os.system(f"subl {code_path}")
 
 
 if __name__ == '__main__':
