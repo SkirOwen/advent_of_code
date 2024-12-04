@@ -32,12 +32,12 @@ def flatten_list(lst: list[list[any]]) -> list[any]:
 
 
 def grid_get(grid, x, y, default = "."):
-    if x < 0 or y < 0:
-        return default
-    try:
-        return grid[y][x]
-    except IndexError:
-        return default
+	if x < 0 or y < 0:
+		return default
+	try:
+		return grid[y][x]
+	except IndexError:
+		return default
 
 
 def grid_slice(grid, x, y, step):
