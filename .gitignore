@@ -150,5 +150,5 @@ gen
 
 
 # Local project files
-input.txt
+**/input.txt
 config.toml
