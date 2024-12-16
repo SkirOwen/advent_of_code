@@ -3,7 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 
 
-def get_neighbours(grid: List, current_point: tuple[int, int]) -> List:
+def get_neighbours(grid: list, current_point: tuple[int, int]) -> List:
 	current_height = grid[current_point[1]][current_point[0]]
 	# print(current_point)
 	neighbours = []
